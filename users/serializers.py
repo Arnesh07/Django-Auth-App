@@ -12,10 +12,9 @@ class UserSerializer(serializers.ModelSerializer):
     # Overriding the create method to hash passwords.
     def create(self, validated_data):
         user = User(
-        id=validated_data['id'],
-        name=validated_data['name'],
-        email=validated_data['email'],
-        password=make_password(validated_data['password'])
+            name=validated_data['name'],
+            email=validated_data['email'],
+            password=make_password(validated_data['password'])
         )
         user.save()
         return user
