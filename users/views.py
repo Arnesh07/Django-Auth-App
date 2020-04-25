@@ -1,7 +1,9 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView 
+from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, TokenHasScope
 
 import requests
 
@@ -33,3 +35,10 @@ class LoginView(APIView):
             }
         )
         return Response(response.json())
+
+class HomePageView(APIView):
+    # Restricted to authenticated users only.
+    permission_classes = [permissions.IsAuthenticated, TokenHasReadWriteScope]
+
+    def get(self, request):
+        return HttpResponse('Home Page')
