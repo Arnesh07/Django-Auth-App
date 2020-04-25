@@ -10,13 +10,17 @@ A basic application in Django using OAuth2.0 for Authentication.
 
 ### Installation Steps
 - Clone the repo
+
 ` git clone https://github.com/Arnesh07/Django-Auth-App `
 - Make a private_constants.py file in the users directory
 - Add `CLIENT_ID = ''` and `CLIENT_SECRET = ''` to it. These are to be updated later.
 - Make migrations (Make sure you are in the project's root)
+
 ` python manage.py makemigrations users`
+
 ` python manage.py migrate`
 - Run the server
+
 `python manage.py runserver`
 
 **To be able to login, there should be atleast one registered application.**
@@ -24,7 +28,7 @@ A basic application in Django using OAuth2.0 for Authentication.
 - To register an application, first create a superuser.
 `python manage.py createsuperuser`
 - Enter the email and password to successfully create a superuser.
-- Then run the server and login to the admin portal using the superuser.
+- Then run the server and login to the admin portal using that superuser.
 - Redirect to `o/applications` endpoint.
 - Create an application.
 - Update the client id and the client secret in the private_constants.py file.
@@ -36,11 +40,14 @@ us to modify the model's fields accordingly.
 email, name and password fields are specified.
 is_staff and is_superuser fields are required for the determination of admin.
 groups and permissions are enabled by the PermissionsMixin Class. 
+
 **username is not used**
+
 `USERNAME_FIELD = 'email'` is used to shift the control of authentication to email
 from username.
 
 UserManager uses the subclass BaseUserManager.
+
 `create_user` and `create_superuser` methods are overriden to make use of the
 customized fields. 
 
