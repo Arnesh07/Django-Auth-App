@@ -1,0 +1,3 @@
+db.sqlite3
+*.pyc
+users/private_constants.py
