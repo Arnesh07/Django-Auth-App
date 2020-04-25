@@ -41,7 +41,7 @@ email, name and password fields are specified.
 is_staff and is_superuser fields are required for the determination of admin.
 groups and permissions are enabled by the PermissionsMixin Class. 
 
-**username is not used**
+**username is not used.**
 
 `USERNAME_FIELD = 'email'` is used to shift the control of authentication to email
 from username.
@@ -52,13 +52,13 @@ UserManager uses the subclass BaseUserManager.
 customized fields. 
 
 #### 2. **views.py**
-- SignupView
+- SignupView:
 It takes use of the generic CreateAPIView of the DRF and uses the UserSerializer to
 create user objects.
-- LoginView
+- LoginView:
 This uses the APIView and overrides the POST request to call the `o/token/` endpoint
 to retrieve the token after authentication.
-- HomePageView
+- HomePageView:
 This is based on the endpoint `/home/`. If the user is authorized, this simply returns a simple HttpResponse.
 
 #### 3. **serializers.py**
