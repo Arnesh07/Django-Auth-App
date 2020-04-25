@@ -1,4 +1,3 @@
-from django.test import TestCase
 from django.utils import timezone
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -7,6 +6,7 @@ from oauth2_provider.models import get_application_model, AccessToken
 import datetime
 
 from .models import User
+
 
 class UserManagerTests(APITestCase):
 
@@ -17,9 +17,9 @@ class UserManagerTests(APITestCase):
 
     def test_create_user(self):
         user = User.objects.create_user(
-            email = self.email,
-            name = self.name,
-            password = self.password
+            email=self.email,
+            name=self.name,
+            password=self.password
         )
         self.assertEqual(user.email, self.email)
         self.assertEqual(user.name, self.name)
@@ -29,15 +29,16 @@ class UserManagerTests(APITestCase):
 
     def test_create_superuser(self):
         superuser = User.objects.create_superuser(
-            email = self.email,
-            name = self.name,
-            password = self.password
+            email=self.email,
+            name=self.name,
+            password=self.password
         )
         self.assertEqual(superuser.email, self.email)
         self.assertEqual(superuser.name, self.name)
         self.assertTrue(superuser.is_staff)
         self.assertTrue(superuser.is_superuser)
         self.assertIsNone(superuser.username)
+
 
 class SignupViewTests(APITestCase):
 
@@ -56,9 +57,10 @@ class SignupViewTests(APITestCase):
         self.assertEqual(User.objects.get().name, self.data['name'])
 
     def test_signup_invalid_email(self):
-        self.data['email'] =  'invalid_email.com'
+        self.data['email'] = 'invalid_email.com'
         response = self.client.post(self.url, self.data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
 
 class LoginViewTests(APITestCase):
 
@@ -71,33 +73,34 @@ class LoginViewTests(APITestCase):
             'password': 'sara1234',
         }
         User.objects.create_user(
-            email = 'ms@gmail.com',
-            name = 'Michael Scofield',
-            password = 'sara1234'
+            email='ms@gmail.com',
+            name='Michael Scofield',
+            password='sara1234'
         )
-    
+
     # def test_login_successful(self):
         # response = self.client.post(self.url, self.data, format='json')
         # self.assertEqual(response.status_code, status.HTTP_200_OK)
         # self.assertIsNotNone(response['access_token'])
 
+
 class HomePageViewTests(APITestCase):
 
     def setUp(self):
         superuser = User.objects.create_superuser(
-            email = 'ms@gmail.com',
-            name = 'Michael Scofield',
-            password = 'sara1234'
+            email='ms@gmail.com',
+            name='Michael Scofield',
+            password='sara1234'
         )
 
         Application = get_application_model()
 
         self.application = Application.objects.create(
-            client_type = Application.CLIENT_CONFIDENTIAL,
-            authorization_grant_type = Application.GRANT_AUTHORIZATION_CODE,
-            redirect_uris = '',
-            name = 'dummy',
-            user = superuser
+            client_type=Application.CLIENT_CONFIDENTIAL,
+            authorization_grant_type=Application.GRANT_AUTHORIZATION_CODE,
+            redirect_uris='',
+            name='dummy',
+            user=superuser
         )
         self.application.save()
 
@@ -105,24 +108,22 @@ class HomePageViewTests(APITestCase):
 
     def test_home_page_authorized(self):
         user = User.objects.create_user(
-            email = 'lb@gmail.com',
-            name = 'Lincoln Burrows',
-            password = 'veronica'
+            email='lb@gmail.com',
+            name='Lincoln Burrows',
+            password='veronica'
         )
         self.access_token = AccessToken.objects.create(
-            user = user,
-            scope = 'read write',
-            expires = timezone.now() + datetime.timedelta(seconds=300),
-            token = 'secret-access-token-key',
-            application = self.application
+            user=user,
+            scope='read write',
+            expires=timezone.now() + datetime.timedelta(seconds=300),
+            token='secret-access-token-key',
+            application=self.application
         )
-        response = self.client.get(self.url, format = 'json', HTTP_AUTHORIZATION = "Bearer {0}".format(self.access_token))
+        response = self.client.get(self.url, format='json',
+                                   HTTP_AUTHORIZATION="Bearer {0}"
+                                   .format(self.access_token))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_home_page_unauthorized(self):
-        response = self.client.get(self.url, format = 'json')
+        response = self.client.get(self.url, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
-
-
-
