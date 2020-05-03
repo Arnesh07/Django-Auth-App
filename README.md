@@ -57,7 +57,7 @@ It takes use of the generic CreateAPIView of the DRF and uses the UserSerializer
 create user objects.
 - LoginView:
 This uses the APIView and overrides the POST request to call the `o/token/` endpoint
-to retrieve the token after authentication.
+to retrieve the token after authentication. A better alternative would have been to not call the `o/token/` endpoint and instead manually imported the required code and call the functions directly.
 - HomePageView:
 This is based on the endpoint `/home/`. If the user is authorized, this simply returns a simple HttpResponse.
 
